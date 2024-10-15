@@ -33,9 +33,15 @@ namespace edward.Maritime.NMEA0183
                 case "AAM":
                     nmeaSentence = new AAMSentence();
                     break;
+                case "ALF":
+                    nmeaSentence = new ALFSentence();
+                    break;
 
                 case "APB":
                     nmeaSentence = new APBSentence();
+                    break;
+                case "CUR":
+                    nmeaSentence = new CURSentence();
                     break;
 
                 case "DPT":
@@ -61,6 +67,9 @@ namespace edward.Maritime.NMEA0183
                 case "GST":
                     nmeaSentence = new GSTSentence();
                     break;
+                case "HBT":
+                    nmeaSentence = new HBTSentence();
+                    break;
 
                 case "HDG":
                     nmeaSentence = new HDGSentence();
@@ -76,6 +85,9 @@ namespace edward.Maritime.NMEA0183
 
                 case "HMS":
                     nmeaSentence = new HMSSentence();
+                    break;
+                case "MTW":
+                    nmeaSentence = new MTWSentence();
                     break;
 
                 case "MWV":
