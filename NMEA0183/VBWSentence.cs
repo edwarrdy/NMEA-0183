@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace edward.Maritime.NMEA0183
+{
+    /// <summary>
+    /// VBW - Dual Ground/Water Speed
+    /// </summary>
+    public class VBWSentence : NMEASentence
+    {
+        /// <summary>
+        /// Longitudinal water speed in knots.
+        /// Negative means moving towards astern.
+        /// </summary>
+        public decimal LongitudinalWaterSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Transverse water speed in knots.
+        /// Negative means moving towards port.
+        /// </summary>
+        public decimal TransverseWaterSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Is the data for Water Speed valid?
+        /// </summary>
+        public bool IsWaterDataValid { get; set; }
+
+        /// <summary>
+        /// Longitudinal ground speed in knots.
+        /// Negative means moving towards astern.
+        /// </summary>
+        public decimal LongitudinalGroundSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Transverse ground speed in knots.
+        /// Negative means moving towards port.
+        /// </summary>
+        public decimal TransverseGroundSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Is the data for Ground Speed valid?
+        /// </summary>
+        public bool IsGroundDataValid { get; set; }
+
+        /// <summary>
+        /// Stern Transverse water speed in knots.
+        /// Negative means moving towards port.
+        /// </summary>
+        public decimal SternTransverseWaterSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Is the data for Stern Water Speed valid?
+        /// </summary>
+        public bool IsSternWaterDataValid { get; set; }
+
+        /// <summary>
+        /// Stern Transverse ground speed in knots.
+        /// Negative means moving towards port.
+        /// </summary>
+        public decimal SternTransverseGroundSpeedKnots { get; set; }
+
+        /// <summary>
+        /// Is the data for Stern Ground Speed valid?
+        /// </summary>
+        public bool IsSternGroundDataValid { get; set; }
+
+        public VBWSentence()
+        {
+            SentenceIdentifier = "VBW";
+            IsWaterDataValid = false;
+            IsGroundDataValid = false;
+            IsSternWaterDataValid = false;
+            IsSternGroundDataValid = false;
+        }
+
+        public override string EncodeSentence()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.AppendFormat("${0}{1},", TalkerIdentifier.ToString(), SentenceIdentifier);
+
+            stringBuilder.AppendFormat("{0},", LongitudinalWaterSpeedKnots);
+
+            stringBuilder.AppendFormat("{0},", TransverseWaterSpeedKnots);
+
+            if (IsWaterDataValid)
+                stringBuilder.Append("A,");
+            else
+                stringBuilder.Append("V,");
+
+            stringBuilder.AppendFormat("{0},", LongitudinalGroundSpeedKnots);
+
+            stringBuilder.AppendFormat("{0},", TransverseGroundSpeedKnots);
+
+            if (IsGroundDataValid)
+                stringBuilder.Append("A,");
+            else
+                stringBuilder.Append("V,");
+
+            stringBuilder.AppendFormat("{0},", SternTransverseWaterSpeedKnots);
+
+            if (IsSternWaterDataValid)
+                stringBuilder.Append("A,");
+            else
+                stringBuilder.Append("V,");
+
+            stringBuilder.AppendFormat("{0},", SternTransverseGroundSpeedKnots);
+
+            if (IsSternGroundDataValid)
+                stringBuilder.Append("A");
+            else
+                stringBuilder.Append("V");
+
+            byte checksum = CalculateChecksum(stringBuilder.ToString());
+
+            stringBuilder.AppendFormat("*{0}\r\n", checksum.ToString("X2"));
+
+            return stringBuilder.ToString();
+        }
+
+        protected override void DecodeInternalSentence(string sentence)
+        {
+            DecodeTalker(sentence);
+
+            string[] vs = sentence.Split(new char[] { ',', '*' });
+
+            // x.x Longitudinal Water Speed in Knots
+            LongitudinalWaterSpeedKnots = decimal.Parse(vs[1]);
+
+            // x.x Transverse Water Speed in Knots
+            TransverseWaterSpeedKnots = decimal.Parse(vs[2]);
+
+            // A Water Speed Data Valid?
+            IsWaterDataValid = vs[3] == "A";
+
+            // x.x Longitudinal Ground Speed in Knots
+            LongitudinalGroundSpeedKnots = decimal.Parse(vs[4]);
+
+            // x.x Transverse Ground Speed in Knots
+            TransverseGroundSpeedKnots = decimal.Parse(vs[5]);
+
+            // A Ground Speed Data Valid?
+            IsGroundDataValid = vs[6] == "A";
+
+            if (vs.Length > 8)
+            {
+                // x.x Stern Transverse Water Speed in Knots
+                SternTransverseWaterSpeedKnots = decimal.Parse(vs[7]);
+
+                // A Stern Water Speed Data Valid?
+                IsSternWaterDataValid = vs[8] == "A";
+
+                // x.x Stern Transverse Ground Speed in Knots
+                SternTransverseGroundSpeedKnots = decimal.Parse(vs[9]);
+
+                // A Stern Ground Speed Data Valid?
+                IsSternGroundDataValid = vs[10] == "A";
+            }
+        }
+    }
+}
