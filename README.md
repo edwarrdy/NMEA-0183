@@ -37,3 +37,8 @@
 - VTG
 - XTE
 - ZDA
+
+![Ö§¸¶±¦](https://github.com/edwarrdy/image/raw/main/alipay.jpg)
+![Î¢ÐÅ](https://github.com/edwarrdy/image/raw/main/wx.jpg)
+
+
