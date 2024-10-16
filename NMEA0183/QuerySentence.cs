@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
     /// Q - Query Sentence

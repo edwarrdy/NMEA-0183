@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
     /// GGA - Global Positioning System Fix Data. Time, Position and fix related data for a GPS receiver

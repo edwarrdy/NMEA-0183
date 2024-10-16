@@ -1,4 +1,4 @@
-﻿using edward.Maritime.NMEA0183;
+﻿using edward.NMEA0183;
 using System;
 using Xunit;
 

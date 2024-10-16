@@ -2,7 +2,7 @@
 using System.Text;
 
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
     /// VLW - Dual Water and Ground Trip Data

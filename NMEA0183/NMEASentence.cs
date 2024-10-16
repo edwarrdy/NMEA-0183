@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     public abstract class NMEASentence
     {
@@ -33,8 +33,20 @@ namespace edward.Maritime.NMEA0183
                 case "AAM":
                     nmeaSentence = new AAMSentence();
                     break;
+                case "ACN":
+                    nmeaSentence = new ACNSentence();
+                    break;
+                case "ALC":
+                    nmeaSentence = new ALCSentence();
+                    break;
                 case "ALF":
                     nmeaSentence = new ALFSentence();
+                    break;
+                case "ALR":
+                    nmeaSentence = new ALRSentence();
+                    break;
+                case "ARC":
+                    nmeaSentence = new ARCSentence();
                     break;
 
                 case "APB":
@@ -108,6 +120,9 @@ namespace edward.Maritime.NMEA0183
 
                 case "RSA":
                     nmeaSentence = new RSASentence();
+                    break;
+                case "RMC":
+                    nmeaSentence = new RMCSentence();
                     break;
 
                 case "THS":

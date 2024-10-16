@@ -1,142 +1,75 @@
 ﻿using System;
 using System.Text;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
-    /// ALF - Custom message for heading, position, and speed.
+    /// VDALF - Set Alarm Information
     /// </summary>
     public class ALFSentence : NMEASentence
     {
-        /// <summary>
-        /// First heading angle (could be true, magnetic, or geographic)
-        /// </summary>
-        public Decimal Heading1 { get; set; }
-
-        /// <summary>
-        /// Second heading angle (could be true, magnetic, or geographic)
-        /// </summary>
-        public Decimal Heading2 { get; set; }
-
-        /// <summary>
-        /// Third heading angle (could be true, magnetic, or geographic)
-        /// </summary>
-        public Decimal Heading3 { get; set; }
-
-        /// <summary>
-        /// UTC Time
-        /// </summary>
-        public String UTCTime { get; set; }
-
-        /// <summary>
-        /// Latitude with N/S indicator
-        /// </summary>
-        public String Latitude { get; set; }
-
-        /// <summary>
-        /// Longitude with E/W indicator
-        /// </summary>
-        public String Longitude { get; set; }
-
-        /// <summary>
-        /// Course angle (usually 3 digits)
-        /// </summary>
-        public Decimal CourseAngle { get; set; }
-
-        /// <summary>
-        /// First speed in knots
-        /// </summary>
-        public Decimal Speed1 { get; set; }
-
-        /// <summary>
-        /// Second speed in knots
-        /// </summary>
-        public Decimal Speed2 { get; set; }
-
-        /// <summary>
-        /// Third speed in knots
-        /// </summary>
-        public Decimal Speed3 { get; set; }
-
-        /// <summary>
-        /// Status flag
-        /// </summary>
-        public char StatusFlag { get; set; }
-
-        /// <summary>
-        /// Custom data string
-        /// </summary>
-        public String CustomData { get; set; }
+        public string AlarmStatus1 { get; set; }
+        public string AlarmStatus2 { get; set; }
+        public string AlarmStatus3 { get; set; }
+        public DateTime AlarmTime { get; set; }
+        public string AdditionalInfo1 { get; set; }
+        public string AdditionalInfo2 { get; set; }
+        public string AdditionalInfo3 { get; set; }
+        public string Identifier { get; set; }
+        public decimal Value1 { get; set; }
+        public decimal Value2 { get; set; }
+        public decimal Value3 { get; set; }
+        public string StatusIndicator { get; set; }
+        public string OptionalInfo { get; set; }
 
         public ALFSentence()
         {
             SentenceIdentifier = "ALF";
         }
 
-        public override String EncodeSentence()
+        public override string EncodeSentence()
         {
             StringBuilder stringBuilder = new StringBuilder();
-
-            // Start sentence
             stringBuilder.AppendFormat("${0}{1},", TalkerIdentifier.ToString(), SentenceIdentifier);
-
-            // Add heading angles
-            stringBuilder.AppendFormat("{0},{1},{2},", Heading1, Heading2, Heading3);
-
-            // Add UTC time
-            stringBuilder.AppendFormat("{0},", UTCTime);
-
-            // Add latitude and longitude
-            stringBuilder.AppendFormat("{0},{1},", Latitude, Longitude);
-
-            // Add course angle
-            stringBuilder.AppendFormat("{0},", CourseAngle);
-
-            // Add speeds
-            stringBuilder.AppendFormat("{0},{1},{2},", Speed1, Speed2, Speed3);
-
-            // Add status flag and custom data
-            stringBuilder.AppendFormat("{0},{1}", StatusFlag, CustomData);
-
-            // Calculate and append checksum
+            stringBuilder.AppendFormat("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},",
+                AlarmStatus1, AlarmStatus2, AlarmStatus3,
+                AlarmTime.ToString("hhmmss.ff"), AdditionalInfo1,
+                AdditionalInfo2, AdditionalInfo3, Identifier,
+                Value1, Value2, Value3, StatusIndicator,
+                OptionalInfo);
             Byte checksum = CalculateChecksum(stringBuilder.ToString());
             stringBuilder.AppendFormat("*{0}\r\n", checksum.ToString("X2"));
 
             return stringBuilder.ToString();
         }
 
-        protected override void DecodeInternalSentence(String sentence)
+        protected override void DecodeInternalSentence(string sentence)
         {
             DecodeTalker(sentence);
+            string[] vs = sentence.Split(new char[] { ',', '*' });
 
-            // Split sentence by ',' and '*'
-            String[] vs = sentence.Split(new char[] { ',', '*' });
+            // 警报状态
+            AlarmStatus1 = vs[1];
+            AlarmStatus2 = vs[2];
+            AlarmStatus3 = vs[3];
 
-            // Parse headings
-            Heading1 = Decimal.Parse(vs[1]);
-            Heading2 = Decimal.Parse(vs[2]);
-            Heading3 = Decimal.Parse(vs[3]);
+            // 时间解析
+            AlarmTime = DateTime.ParseExact(vs[4], "hhmmss.ff", null);
 
-            // Parse UTC time
-            UTCTime = vs[4];
+            // 其他信息
+            AdditionalInfo1 = vs[5];
+            AdditionalInfo2 = vs[6];
+            AdditionalInfo3 = vs[7];
+            Identifier = vs[8];
 
-            // Parse latitude and longitude
-            Latitude = vs[5];
-            Longitude = vs[6];
+            // 数值
+            Value1 = Decimal.Parse(vs[9]);
+            Value2 = Decimal.Parse(vs[10]);
+            Value3 = Decimal.Parse(vs[11]);
 
-            // Parse course angle
-            CourseAngle = Decimal.Parse(vs[7]);
-
-            // Parse speeds
-            Speed1 = Decimal.Parse(vs[8]);
-            Speed2 = Decimal.Parse(vs[9]);
-            Speed3 = Decimal.Parse(vs[10]);
-
-            // Parse status flag
-            StatusFlag = vs[11][0];
-
-            // Parse custom data
-            CustomData = vs[12];
+            // 状态指示符和可选信息
+            StatusIndicator = vs[12];
+            OptionalInfo = vs[13];
         }
     }
 }

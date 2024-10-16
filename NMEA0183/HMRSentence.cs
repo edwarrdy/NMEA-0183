@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
-using static edward.Maritime.NMEA0183.APBSentence;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
     /// HMR -  Heading Monitor Receive

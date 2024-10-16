@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     public class TalkerIdentifier
     {

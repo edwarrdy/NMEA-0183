@@ -3,7 +3,11 @@
 
 ## Implemented Sentences
 - AAM
+- ACN
 - ALF
+- ALC
+- ALR
+- ARC
 - APM
 - CUR
 - DPT
@@ -23,6 +27,7 @@
 - ROT
 - RPM
 - RSA
+- RMC
 - THS
 - TTM
 - TXT

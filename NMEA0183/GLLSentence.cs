@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace edward.Maritime.NMEA0183
+namespace edward.NMEA0183
 {
     /// <summary>
     /// GLL - Geographic Position – Latitude/Longitude
