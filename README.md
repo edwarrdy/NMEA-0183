@@ -1,4 +1,4 @@
-# edward.Maritime.NMEA0183
+# edward.NMEA0183
 
 
 ## Implemented Sentences
