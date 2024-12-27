@@ -7,7 +7,7 @@ namespace edward.NMEA0183
     /// <summary>
     /// VLW - Dual Water and Ground Trip Data
     /// </summary>
-    public class VDVLWSentence : NMEASentence
+    public class VLWSentence : NMEASentence
     {
         /// <summary>
         /// Total trip (Water) in nautical miles
@@ -29,7 +29,7 @@ namespace edward.NMEA0183
         /// </summary>
         public decimal TripGround { get; set; }
 
-        public VDVLWSentence()
+        public VLWSentence()
         {
             SentenceIdentifier = "VLW";
         }

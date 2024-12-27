@@ -59,6 +59,9 @@ namespace edward.NMEA0183
                 case "DPT":
                     nmeaSentence = new DPTSentence();
                     break;
+                case "DBT":
+                    nmeaSentence = new DBTSentence();
+                    break;
 
                 case "DTM":
                     nmeaSentence = new DTMSentence();
@@ -139,6 +142,9 @@ namespace edward.NMEA0183
 
                 case "VBW":
                     nmeaSentence = new VBWSentence();
+                    break;
+                case "VLW":
+                    nmeaSentence = new VLWSentence();
                     break;
 
                 case "VHW":

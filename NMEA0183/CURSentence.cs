@@ -44,7 +44,7 @@ namespace edward.NMEA0183
             string[] vs = sentence.Split(new char[] { ',', '*' });
 
             // 当前速度（节）
-            CurrentSpeed = decimal.Parse(vs[1]);
+            CurrentSpeed = decimal.Parse(vs[2]);
 
             // 底部跟踪源
             BottomTrackSource = vs[4][0]; // 'T'或'B'，根据需要解析
